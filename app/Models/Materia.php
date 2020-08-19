@@ -2,24 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-
-class Materia extends Model
+class Materia extends ModelBasico
 {
-    public    $timestamps = false;
     protected $fillable   = ['nome'];
-    protected $perPage    = 10;
-    protected $appends    = ['links'];
-
-
-    public function getLinksAttribute(): array
-    {
-        return [
-            "self"        => "/api/materias/{$this->id}",
-            "aulas"       => "/api/materias/{$this->id}/aulas",
-            "professores" => "/api/materias/{$this->id}/professores"
-        ];
-    }
+    protected $appends    = ['url', 'aulas', 'professores'];
 
 
     public function professores()
@@ -30,5 +16,16 @@ class Materia extends Model
     public function aulas()
     {
         return $this->hasMany(Aula::class);
+    }
+
+
+    public function getAulasAttribute(): array
+    {
+        return $this->mountUrlsArray("aulas");
+    }
+
+    public function getProfessoresAttribute(): array
+    {
+        return $this->mountUrlsArray("professores");
     }
 }

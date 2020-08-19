@@ -2,25 +2,11 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-
-class Professor extends Model
+class Professor extends ModelBasico
 {
-    public    $timestamps = false;
-    protected $table      = 'professores';
-    protected $fillable   = ['nome', 'avatar', 'whatsapp', 'short_bio', 'full_bio'];
-    protected $perPage    = 3;
-    protected $appends    = ['links'];
-
-
-    public function getLinksAttribute(): array
-    {
-        return [
-            "self"     => "/api/professores/{$this->id}",
-            "aulas"    => "/api/professores/{$this->id}/aulas",
-            "materias" => "/api/professores/{$this->id}/materias"
-        ];
-    }
+    protected $table    = 'professores';
+    protected $fillable = ['nome', 'avatar', 'whatsapp', 'short_bio', 'full_bio'];
+    protected $appends  = ['url', 'aulas', 'materias'];
 
 
     public function materias()
@@ -31,5 +17,16 @@ class Professor extends Model
     public function aulas()
     {
         return $this->hasMany(Aula::class);
+    }
+
+
+    public function getAulasAttribute(): array
+    {
+        return $this->mountUrlsArray("aulas");
+    }
+
+    public function getMateriasAttribute(): array
+    {
+        return $this->mountUrlsArray("materias");
     }
 }

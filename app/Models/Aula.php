@@ -2,14 +2,11 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-
-class Aula extends Model
+class Aula extends ModelBasico
 {
-    public    $timestamps = false;
-    protected $fillable   = ['materia_id', 'professor_id', 'preco', 'inicio', 'fim', 'dia'];
-    protected $perPage    = 10;
-    protected $appends    = ['links'];
+    protected $fillable = ['materia_id', 'professor_id', 'preco', 'inicio', 'fim', 'dia'];
+    protected $hidden   = ['professor_id', 'materia_id'];
+    protected $appends  = ['url', 'professor', 'materia'];
 
 
     public function professor()
@@ -23,12 +20,13 @@ class Aula extends Model
     }
 
 
-    public function getLinksAttribute(): array
+    public function getProfessorAttribute(): Professor
     {
-        return [
-            "self"      => "/api/aulas/{$this->id}",
-            "materia"   => "/api/materias/{$this->materia_id}",
-            "professor" => "/api/professores/{$this->professor_id}"
-        ];
+        return $this->professor()->get()->makeHidden(['aulas', 'materias'])->first();
+    }
+
+    public function getMateriaAttribute(): Materia
+    {
+        return $this->materia()->get()->makeHidden(['aulas', 'professores'])->first();
     }
 }
