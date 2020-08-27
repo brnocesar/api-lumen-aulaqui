@@ -7,6 +7,11 @@ class Materia extends ModelBasico
     protected $fillable   = ['nome'];
     protected $appends    = ['url', 'aulas', 'professores'];
 
+    public static $rules = [
+        'nome'       => 'required|max:60',
+        'materia_id' => 'pertenceAoProfessor'
+    ];
+
 
     public function professores()
     {

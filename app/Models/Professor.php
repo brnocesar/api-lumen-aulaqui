@@ -8,6 +8,14 @@ class Professor extends ModelBasico
     protected $fillable = ['nome', 'avatar', 'whatsapp', 'short_bio', 'full_bio'];
     protected $appends  = ['url', 'aulas', 'materias'];
 
+    public static $rules = [
+        'nome'      => 'required|max:192',
+        'avatar'    => 'max:255',
+        'whatsapp'  => 'required|max:11|min:8',
+        'short_bio' => 'required|max:144',
+        'full_bio'  => 'required|max:255'
+    ];
+
 
     public function materias()
     {

@@ -27,13 +27,12 @@ class ControllerBasico extends Controller
 
     public function store(Request $request)
     {
-        return response()->json(
-            $this->entidade::create($request->all()),
-            200
-        );
+        $this->validate($request, $this->entidade::$rules);
+
+        return response()->json($this->entidade::create($request->all()), 200);
     }
 
-    public function show(int $id)
+    public function show($id)
     {
         $recurso = $this->entidade::find($id);
 
@@ -43,10 +42,11 @@ class ControllerBasico extends Controller
         );
     }
 
-    public function update(int $id, Request $request)
+    public function update($id, Request $request)
     {
-        $recurso = $this->entidade::find($id);
+        $this->validate($request, $this->entidade::$rules);
 
+        $recurso = $this->entidade::find($id);
         if ( is_null($recurso) ) {
             return response()->json(['erro' => 'Recurso não encontrado'], 404);
         }
@@ -56,7 +56,7 @@ class ControllerBasico extends Controller
         return response()->json($recurso , 200);
     }
 
-    public function destroy(int $id)
+    public function destroy($id)
     {
         $recurso = $this->entidade::destroy($id);
 

@@ -21,12 +21,12 @@ class ProfessorController extends ControllerBasico
             return response()->json(['erro' => 'Professor não cadastrado'], 400);
         }
 
-        $professor->materias()->sync($request->materias_id);
+        $professor->materias()->sync($this->materiasQueExistem($request->materias_id));
 
         return response()->json($professor, 200);
     }
 
-    public function update(int $id, Request $request)
+    public function update($id, Request $request)
     {
         $professor = Professor::find($id);
 
@@ -34,13 +34,13 @@ class ProfessorController extends ControllerBasico
             return response()->json(['erro' => 'recurso não encontrado'], 404);
         }
 
-        $professor->materias()->sync($request->materias_id);
+        $professor->materias()->sync($this->materiasQueExistem($request->materias_id));
         $professor->update($request->all());
 
         return response()->json($professor , 200);
     }
 
-    public function destroy(int $id)
+    public function destroy($id)
     {
         $professor = Professor::find($id);
 
@@ -59,5 +59,10 @@ class ProfessorController extends ControllerBasico
         $materia = Materia::find($materia_id);
 
         return is_null($materia) ? [] : $materia->professores;
+    }
+
+    private function materiasQueExistem(array $materias_id): array
+    {
+        return Materia::whereIn('id', $materias_id)->pluck('id')->toArray();
     }
 }

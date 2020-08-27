@@ -12,7 +12,7 @@ class MateriaController extends ControllerBasico
         $this->entidade = Materia::class;
     }
 
-    public function destroy(int $id)
+    public function destroy($id)
     {
         $materia = Materia::find($id);
 

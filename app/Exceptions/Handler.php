@@ -49,6 +49,7 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Throwable $exception)
     {
+        // return response()->json(['erro' => 'hummm... acho que tem algo errado...'], 400);
         return parent::render($request, $exception);
     }
 }
