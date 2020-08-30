@@ -10,10 +10,10 @@ class Aula extends ModelBasico
 
     public static $rules = [
         'materia_id'     => ['required', 'integer', 'existeMateria', 'pertenceAoProfessor'],
-        'professor_id'   => ['required', 'integer', 'existeProfessor'],
+        'professor_id'   => ['required', 'integer', 'exists:professores,id'],
         'preco'          => ['required', 'integer'],
         'inicio'         => ['required', 'date_format:H:i'],
-        'fim'            => ['required', 'date_format:H:i', /* 'duracaoMinima', */ 'acabarMesmoDia'],
+        'fim'            => ['required', 'date_format:H:i', 'acabarMesmoDia'],
         'dia'            => ['required', 'integer', 'in:0,1,2,3,4,5,6']
     ];
 

@@ -27,6 +27,7 @@ class ControllerBasico extends Controller
 
     public function store(Request $request)
     {
+        // dd($request->all());
         $this->validate($request, $this->entidade::$rules);
 
         return response()->json($this->entidade::create($request->all()), 200);
